@@ -4,6 +4,9 @@ import CardContent from '@mui/material/CardContent';
 
 const TournamentCard = ({ tournament, isFeatured = false }) => {
     // Renamed to avoid conflict with MUI's CardContent
+
+    
+
     const TournamentCardContent = () => (
       <div className="group cursor-pointer">
         <div className="relative">

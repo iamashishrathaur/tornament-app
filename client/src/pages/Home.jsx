@@ -8,7 +8,7 @@ import { Filter } from "lucide-react";
 import TournamentCard from "../components/TournamentCard";
 import BottomNav from "../components/BottomNav";
 import freefireImg from '../assets/freefire.png'
-import pubgImg from '../assets/pubg.jpg'
+import pubgImg from '../assets/pubg.jpg?100/200'
 import squadImg from '../assets/squad.png'
 
 const Home = () => {
