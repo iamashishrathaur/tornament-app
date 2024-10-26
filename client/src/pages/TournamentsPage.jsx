@@ -1,14 +1,6 @@
-// src/pages/HostTournamentPage.jsx
 import React, { useState } from 'react';
 import {
-  Card,
-  CardContent,
-  InputLabel,
-  TextField,
   Button,
-  Select,
-  MenuItem,
-  FormControl,
   Tabs,
   Tab,
   Alert,
@@ -16,12 +8,17 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import { Trophy, Upload, Clock, Users, Info } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
+import ResponsiveHeader from '../components/ResponsiveHeader';
+import DesktopSidebar from '../components/DesktopSidebar';
+import CardSection from '../components/CardSection';
+import FormField from '../components/FormField';
+import FormSelect from '../components/FormSelect';
 
 const HostTournamentPage = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [activeSection, setActiveSection] = useState('tournaments');
+  const [searchVisible, setSearchVisible] = useState(false);
   const [formData, setFormData] = useState({
     tournamentName: '',
     game: '',
@@ -55,6 +52,11 @@ const HostTournamentPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Basic validation
+    if (!formData.tournamentName || !formData.game) {
+      alert("Tournament Name and Game are required!");
+      return;
+    }
     console.log('Form submitted:', formData);
   };
 
@@ -63,294 +65,114 @@ const HostTournamentPage = () => {
   };
 
   return (
-    <Box maxWidth="lg" mx="auto" p={4}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Host a Tournament
-      </Typography>
-      <Typography variant="body1" color="textSecondary" gutterBottom>
-        Create and manage your gaming tournament
-      </Typography>
+    <div className="min-h-screen bg-gray-50">
+      {/* Responsive Header */}
+      <ResponsiveHeader searchVisible={searchVisible} setSearchVisible={setSearchVisible} />
 
-      <Alert severity="info" sx={{ mb: 4 }}>
-        <AlertTitle>Before you start</AlertTitle>
-        Make sure you have all tournament details ready, including prize pool information, rules, and schedule.
-      </Alert>
+      <div className='block md:flex'>
+        <div className='hidden md:block z-10' style={{ width: '240px', minHeight: '100vh', borderRight: '1px solid #ddd', backgroundColor: '#f9f9f9' }}>
+        <DesktopSidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+      </div>
 
-      <Tabs value={activeTab} onChange={handleTabChange} centered>
-        <Tab label="Basic Info" />
-        <Tab label="Prize & Entry" />
-        <Tab label="Details" />
-        <Tab label="Requirements" />
-        <Tab label="Contact" />
-      </Tabs>
 
-      <Box role="tabpanel" hidden={activeTab !== 0} p={4}>
-        <Card>
-          <CardContent>
-            <FormControl fullWidth margin="normal">
-              {/* <InputLabel>Tournament Name</InputLabel>
-              <TextField
-                name="tournamentName"
-                value={formData.tournamentName}
-                onChange={handleInputChange}
-                placeholder="Enter tournament name"
-              /> */}
-              <TextField
-                label="Tournament Name"
-                type="text"
-                name="tournamentName"
-                value={formData.tournamentName}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
-            </FormControl>
+        {/* Main Content Area */}
+        <div className='flex-1 p-5 sm:p-10 pt-16 sm:pt-8 overflow-auto'>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            Host a Tournament
+          </Typography>
+          <Typography variant="body1" color="textSecondary" gutterBottom>
+            Create and manage your gaming tournament
+          </Typography>
 
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Game</InputLabel>
-              <Select
-                value={formData.game}
-                name="game"
-                onChange={handleInputChange}
-              >
-                <MenuItem value="freefire">Free Fire</MenuItem>
-                <MenuItem value="pubg">PUBG Mobile</MenuItem>
-                <MenuItem value="codm">COD Mobile</MenuItem>
-                <MenuItem value="fortnite">Fortnite</MenuItem>
-              </Select>
-            </FormControl>
+          <Alert severity="info" sx={{ mb: 4 }}>
+            <AlertTitle>Before you start</AlertTitle>
+            Make sure you have all tournament details ready, including prize pool information, rules, and schedule.
+          </Alert>
 
+          <Tabs value={activeTab} onChange={handleTabChange} centered >
+            <Tab label="Basic Info" />
+            <Tab label="Prize & Entry" />
+            <Tab label="Details" />
+            <Tab label="Requirements" />
+            <Tab label="Contact" />
+          </Tabs>
+
+          {/* Tab Panels */}
+          <CardSection activeTab={activeTab} tabIndex={0}>
+            <FormField label="Tournament Name" name="tournamentName" value={formData.tournamentName} onChange={handleInputChange} />
+            <FormSelect label="Game" name="game" value={formData.game} onChange={handleInputChange} options={[
+              { value: 'freefire', label: 'Free Fire' },
+              { value: 'pubg', label: 'PUBG Mobile' },
+              { value: 'codm', label: 'COD Mobile' },
+              { value: 'fortnite', label: 'Fortnite' },
+            ]} />
             <Box display="flex" gap={2}>
-              <TextField
-                label="Start Date"
-                type="datetime-local"
-                fullWidth
-                name="startDate"
-                value={formData.startDate}
-                onChange={handleInputChange}
-                margin="normal"
-                InputLabelProps={{ shrink: true }}
-              />
-              <TextField
-                label="End Date"
-                type="datetime-local"
-                fullWidth
-                name="endDate"
-                value={formData.endDate}
-                onChange={handleInputChange}
-                margin="normal"
-                InputLabelProps={{ shrink: true }}
-              />
+              <FormField label="Start Date" name="startDate" value={formData.startDate} onChange={handleInputChange} type="datetime-local" InputLabelProps={{ shrink: true }} />
+              <FormField label="End Date" name="endDate" value={formData.endDate} onChange={handleInputChange} type="datetime-local" InputLabelProps={{ shrink: true }} />
             </Box>
-
             <Box display="flex" gap={2}>
-              <TextField
-                label="Registration Deadline"
-                type="datetime-local"
-                fullWidth
-                name="registrationDeadline"
-                value={formData.registrationDeadline}
-                onChange={handleInputChange}
-                margin="normal"
-                InputLabelProps={{ shrink: true }}
-              />
-              <FormControl fullWidth margin="normal">
-                <InputLabel>Time Zone</InputLabel>
-                <Select
-                  name="timeZone"
-                  value={formData.timeZone}
-                  onChange={handleInputChange}
-                >
-                  <MenuItem value="utc">UTC</MenuItem>
-                  <MenuItem value="est">EST</MenuItem>
-                  <MenuItem value="pst">PST</MenuItem>
-                  <MenuItem value="ist">IST</MenuItem>
-                </Select>
-              </FormControl>
+              <FormField label="Registration Deadline" name="registrationDeadline" value={formData.registrationDeadline} onChange={handleInputChange} type="datetime-local" InputLabelProps={{ shrink: true }} />
+              <FormSelect label="Time Zone" name="timeZone" value={formData.timeZone} onChange={handleInputChange} options={[
+                { value: 'utc', label: 'UTC' },
+                { value: 'est', label: 'EST' },
+                { value: 'pst', label: 'PST' },
+                { value: 'ist', label: 'IST' },
+              ]} />
             </Box>
-          </CardContent>
-        </Card>
-      </Box>
+          </CardSection>
 
-      <Box role="tabpanel" hidden={activeTab !== 1} p={4}>
-        <Card>
-          <CardContent>
+          <CardSection activeTab={activeTab} tabIndex={1}>       
             <Box display="flex" gap={2}>
-              <TextField
-                label="Total Prize Pool"
-                type="number"
-                name="prizePool"
-                value={formData.prizePool}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Entry Fee"
-                type="number"
-                name="entryFee"
-                value={formData.entryFee}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
+              <FormField label="Total Prize Pool" name="prizePool" type='number' value={formData.prizePool} onChange={handleInputChange} />  
+              <FormField label="Entry Fee" type="number" name="entryFee" value={formData.entryFee} onChange={handleInputChange}/>
             </Box>
-
             <Box display="flex" gap={2}>
-              <TextField
-                label="Maximum Teams"
-                type="number"
-                name="maxTeams"
-                value={formData.maxTeams}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Players per Team"
-                type="number"
-                name="playersPerTeam"
-                value={formData.playersPerTeam}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
+              <FormField label="Maximum Teams" type="number" name="maxTeams" value={formData.maxTeams} onChange={handleInputChange}/>
+              <FormField label="Players per Team" type="number" name="playersPerTeam" value={formData.playersPerTeam} onChange={handleInputChange} />
             </Box>
-          </CardContent>
-        </Card>
-      </Box>
+          </CardSection>
 
-      <Box role="tabpanel" hidden={activeTab !== 2} p={4}>
-        <Card>
-          <CardContent>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Tournament Format</InputLabel>
-              <Select
-                value={formData.format}
-                name="format"
-                onChange={handleInputChange}
-              >
-                <MenuItem value="single">Single Elimination</MenuItem>
-                <MenuItem value="double">Double Elimination</MenuItem>
-                <MenuItem value="round">Round Robin</MenuItem>
-                <MenuItem value="swiss">Swiss System</MenuItem>
-              </Select>
-            </FormControl>
+          <CardSection activeTab={activeTab} tabIndex={2}>
+            <FormSelect label="Tournament Format" name="format" value={formData.format} onChange={handleInputChange} options={[
+              { value: 'single', label: 'Single Elimination' },
+              { value: 'double', label: 'Double Elimination' },
+              { value: 'round', label: 'Round Robin' },
+              { value: 'swiss', label: 'Swiss System' },
+            ]} />
+            <FormField label="Tournament Description" name="description" value={formData.description} onChange={handleInputChange} multiline rows={4} />
+            <FormField label="Tournament Rules" name="rules" value={formData.rules} onChange={handleInputChange} multiline rows={4} />
+            <FormField label="Schedule" name="schedule" value={formData.schedule} onChange={handleInputChange} multiline rows={4} />
+          </CardSection>
+          
+          <CardSection activeTab={activeTab} tabIndex={3}>
+            <FormField label="Platform Requirements" name="platformRequirements" value={formData.platformRequirements} onChange={handleInputChange} multiline rows={4} />
+            <FormField label="Minimum Rank Requirement" name="minimumRank" value={formData.minimumRank} onChange={handleInputChange}/>
+            <FormSelect label="Region Restriction" name="regionRestriction" value={formData.regionRestriction} onChange={handleInputChange} options={[
+              { value: 'none', label: 'No Restriction' },
+              { value: 'na', label: 'North America' },
+              { value: 'eu', label: 'Europe' },
+              { value: 'asia', label: 'Asia' },
+            ]} />
+          </CardSection>
+          
+          <CardSection activeTab={activeTab} tabIndex={4}>
+            <FormField label="Organizer Name" name="organizerName" value={formData.organizerName} onChange={handleInputChange} />
+            <FormField label="Organizer Email" type="email" name="organizerEmail" value={formData.organizerEmail} onChange={handleInputChange}/>
+            <FormField label="Discord Server Link" name="discordServer" value={formData.discordServer} onChange={handleInputChange}/>
+          </CardSection>
 
-            <TextField
-              label="Tournament Description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              multiline
-              rows={4}
-              fullWidth
-              margin="normal"
-            />
+          <Box mt={4} display="flex" justifyContent="flex-end" gap={2}>
+            <Button variant="outlined">Save as Draft</Button>
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+              Create Tournament
+            </Button>
+          </Box>
+        </div>
+      </div>
 
-            <TextField
-              label="Tournament Rules"
-              name="rules"
-              value={formData.rules}
-              onChange={handleInputChange}
-              multiline
-              rows={4}
-              fullWidth
-              margin="normal"
-            />
-
-            <TextField
-              label="Schedule"
-              name="schedule"
-              value={formData.schedule}
-              onChange={handleInputChange}
-              multiline
-              rows={4}
-              fullWidth
-              margin="normal"
-            />
-          </CardContent>
-        </Card>
-      </Box>
-
-      <Box role="tabpanel" hidden={activeTab !== 3} p={4}>
-        <Card>
-          <CardContent>
-            <TextField
-              label="Platform Requirements"
-              name="platformRequirements"
-              value={formData.platformRequirements}
-              onChange={handleInputChange}
-              multiline
-              rows={4}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Minimum Rank Requirement"
-              name="minimumRank"
-              value={formData.minimumRank}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Region Restriction</InputLabel>
-              <Select
-                name="regionRestriction"
-                value={formData.regionRestriction}
-                onChange={handleInputChange}
-              >
-                <MenuItem value="none">No Restriction</MenuItem>
-                <MenuItem value="na">North America</MenuItem>
-                <MenuItem value="eu">Europe</MenuItem>
-                <MenuItem value="asia">Asia</MenuItem>
-              </Select>
-            </FormControl>
-          </CardContent>
-        </Card>
-      </Box>
-
-      <Box role="tabpanel" hidden={activeTab !== 4} p={4}>
-        <Card>
-          <CardContent>
-            <TextField
-              label="Organizer Name"
-              name="organizerName"
-              value={formData.organizerName}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Contact Email"
-              type="email"
-              name="organizerEmail"
-              value={formData.organizerEmail}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Discord Server Link"
-              name="discordServer"
-              value={formData.discordServer}
-              onChange={handleInputChange}
-              fullWidth
-              margin="normal"
-            />
-          </CardContent>
-        </Card>
-      </Box>
-
-      <Box mt={4} display="flex" justifyContent="flex-end" gap={2}>
-        <Button variant="outlined">Save as Draft</Button>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Create Tournament
-        </Button>
-      </Box>
+      {/* Bottom Navigation for Mobile */}
       <BottomNav activeSection={activeSection} setActiveSection={setActiveSection} />
-    </Box>
+    </div>
   );
 };
 
