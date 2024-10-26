@@ -1,13 +1,13 @@
 // src/components/CardSection.jsx
 import React from 'react';
-import { Box, Card, CardContent } from '@mui/material';
+import { Card, CardContent } from '@mui/material';
 
 const CardSection = ({ activeTab, tabIndex, children }) => (
-  <Box role="tabpanel" hidden={activeTab !== tabIndex} p={4}>
+  <div hidden={activeTab !== tabIndex}>
     <Card>
       <CardContent>{children}</CardContent>
     </Card>
-  </Box>
+  </div>
 );
 
 export default CardSection;

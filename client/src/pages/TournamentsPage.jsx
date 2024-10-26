@@ -97,6 +97,7 @@ const HostTournamentPage = () => {
             <Tab label="Contact" />
           </Tabs>
 
+
           {/* Tab Panels */}
           <CardSection activeTab={activeTab} tabIndex={0}>
             <FormField label="Tournament Name" name="tournamentName" value={formData.tournamentName} onChange={handleInputChange} />
@@ -161,12 +162,12 @@ const HostTournamentPage = () => {
             <FormField label="Discord Server Link" name="discordServer" value={formData.discordServer} onChange={handleInputChange}/>
           </CardSection>
 
-          <Box mt={4} display="flex" justifyContent="flex-end" gap={2}>
+          <div className='mt-5 flex justify-end gap-2' >
             <Button variant="outlined">Save as Draft</Button>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
               Create Tournament
             </Button>
-          </Box>
+          </div>
         </div>
       </div>
 
