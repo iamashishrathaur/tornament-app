@@ -14,10 +14,10 @@ import DesktopSidebar from '../components/DesktopSidebar';
 import CardSection from '../components/CardSection';
 import FormField from '../components/FormField';
 import FormSelect from '../components/FormSelect';
+import SearchBar from '../components/SearchBar';
 
 const HostTournamentPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const [activeSection, setActiveSection] = useState('tournaments');
   const [searchVisible, setSearchVisible] = useState(false);
   const [formData, setFormData] = useState({
     tournamentName: '',
@@ -67,13 +67,11 @@ const HostTournamentPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Responsive Header */}
-      <ResponsiveHeader searchVisible={searchVisible} setSearchVisible={setSearchVisible} />
-
-      <div className='block md:flex'>
-        <div className='hidden md:block z-10' style={{ width: '240px', minHeight: '100vh', borderRight: '1px solid #ddd', backgroundColor: '#f9f9f9' }}>
-        <DesktopSidebar activeSection={activeSection} setActiveSection={setActiveSection} />
-      </div>
-
+      
+      <DesktopSidebar/>
+      <div className="md:pl-64">
+          <ResponsiveHeader searchVisible={searchVisible} setSearchVisible={setSearchVisible} />
+          <SearchBar  visible={searchVisible} />
 
         {/* Main Content Area */}
         <div className='flex-1 p-5 sm:p-10 pt-16 sm:pt-8 overflow-auto'>
@@ -89,7 +87,7 @@ const HostTournamentPage = () => {
             Make sure you have all tournament details ready, including prize pool information, rules, and schedule.
           </Alert>
 
-          <Tabs value={activeTab} onChange={handleTabChange} centered >
+          <Tabs value={activeTab} onChange={handleTabChange} centered variant='scrollable' scrollButtons="auto">
             <Tab label="Basic Info" />
             <Tab label="Prize & Entry" />
             <Tab label="Details" />
@@ -171,8 +169,8 @@ const HostTournamentPage = () => {
         </div>
       </div>
 
-      {/* Bottom Navigation for Mobile */}
-      <BottomNav activeSection={activeSection} setActiveSection={setActiveSection} />
+      {/* Bottom Navigation for Mobile */} 
+      <BottomNav/>
     </div>
   );
 };

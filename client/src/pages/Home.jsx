@@ -12,7 +12,6 @@ import pubgImg from '../assets/pubg.jpg?100/200'
 import squadImg from '../assets/squad.png'
 
 const Home = () => {
-    const [activeSection, setActiveSection] = useState('tournaments');
     const [searchVisible, setSearchVisible] = useState(false);
     const [activeTab, setActiveTab] = useState('all');
     const [searchTerm, setSearchTerm] = useState('');
@@ -68,7 +67,7 @@ const Home = () => {
   
     return (
       <div className="min-h-screen bg-gray-50">
-        <DesktopSidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+        <DesktopSidebar/>
         <div className="md:pl-64">
           <ResponsiveHeader searchVisible={searchVisible} setSearchVisible={setSearchVisible} />
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} visible={searchVisible} />
@@ -100,7 +99,7 @@ const Home = () => {
             </div>
           </main>
         </div>
-        <BottomNav activeSection={activeSection} setActiveSection={setActiveSection} />
+        <BottomNav/>
       </div>
     );
   };
