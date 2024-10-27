@@ -1,6 +1,8 @@
 import {RouterProvider,createBrowserRouter } from 'react-router-dom'
 import HostTournamentPage from './pages/TournamentsPage';
 import Home from './pages/Home';
+import MyPage from './pages/My';
+import ProfilePage from './pages/Profile';
 
 const App = () => {
   const router =createBrowserRouter([
@@ -15,6 +17,10 @@ const App = () => {
     {
       element:<HostTournamentPage/>,
       path:'/host'
+    },
+    {
+      element:<MyPage/>,
+      path:'/profile'
     }
   ])
  return(

@@ -72,7 +72,7 @@ const Home = () => {
           <ResponsiveHeader searchVisible={searchVisible} setSearchVisible={setSearchVisible} />
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} visible={searchVisible} />
           
-          <main className="max-w-7xl mx-auto pb-16 md:pb-8">
+          <main className="flex-1 max-w-7xl mx-auto pb-16 md:pb-8 overflow-auto">
             <GameFilter activeTab={activeTab} setActiveTab={setActiveTab} />
             <FeaturedSection tournaments={filteredTournaments} />
             
